@@ -1,157 +1,131 @@
-# Make 발표자료 - 홍승준
+# 🚀 Make를 이용한 지역 편의시설 및 정보 안내 사무자동화 (홍승준)
 
-- 이 서비스를 왜 만들게 되었나요?
-    
-    처음 가는 동네에 도착했는데 어떤 시설이 있는지 궁금하거나, 뭘 해야 할지 궁금할 때 사용
-    
-- 어떤 모듈을 사용해서 만들었나요?
-    
-    Google Sheets
-    
-    HTTP
-    
-    JSON
-    
-    Flow Control (Iterator)
-    
-    OpenAI
-    
-    Google docs
-    
-    Mail (Naver)
-    
-- 서비스 동작의 흐름 - 0
-    
-    ![스크린샷 2025-09-10 110921.png](images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2025-09-10_110921.png)
-    
-    ![스크린샷 2025-09-10 112233.png](images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2025-09-10_112233.png)
-    
-    ![스크린샷 2025-09-10 112658.png](images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2025-09-10_112658.png)
-    
-    ![스크린샷 2025-09-10 113747.png](images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2025-09-10_113747.png)
-    
-- 서비스 동작의 흐름 - 1
-    
-    ![image.png](images/image.png)
-    
-    1. Google Form 과 연결된 Google Sheets가 새로운 응답을 감지합니다.
-        
-        ![image.png](images/image%201.png)
-        
-    2. HTTP가 Kakao API를 이용해 사용자가 요청한 것을 가져옵니다,
-        
-        ![image.png](images/image%202.png)
-        
-    3. Parse JSON
-        
-        ![image.png](images/image%203.png)
-        
-        이렇게 INPUT된 값을 Parse JSON을 통해 
-        
-        ![image.png](images/image%204.png)
-        
-        깔끔하게 정리합니다.
-        
-    4. Iterator를 이용해 
-        
-        ![image.png](images/image%205.png)
-        
-        OpenAI가 4개 컬렉션을 하나씩 순차적으로 감지하게 합니다.
-        
-        (Iterator를 사용하지 않으면 Collection 1번만 4번 감지합니다.)
-        
-        ![image.png](images/image%206.png)
-        
-        - Iterator의 OUTPUT 값
-        
-    5. OpenAI를 이용한 후기 정리
-        
-        ![image.png](images/image%207.png)
-        
-        OpenAI를 이용해 후기를 정리합니다. 한국 사람들은 후기에 예민하거든요
-        
-        Bundle이 4개이므로 4개의 각기 다른 답변이 출력됩니다.
-        
-    
-    1. Google Sheet Add a row
-        
-        ![image.png](images/image%208.png)
-        
-        기능을 이용해 출력 값을 구글 시트에 기록합니다.
-        
-    
-- 서비스 동작의 흐름 - 2
-    
-    ![image.png](images/image%209.png)
-    
-    1. Google Docs 문서를 생성한 후 앞서 Add a Row 작업을 실행한 Sheet를 Search합니다.
-    
-    1. 확인된 Row들을 생성한 문서에 삽입합니다.
-        
-        ![image.png](images/image%2010.png)
-        
-        이렇게 요청하면 Sheet를 참조해
-        
-        ![image.png](images/image%2011.png)
-        
-        이렇게 담기게 됩니다.
-        
-        여러 개의 다른 답변을 한 개의 문서로 모으는 작업입니다.
-        
-- 서비스 동작의 흐름 -3
-    
-    ![image.png](images/image%2012.png)
-    
-    1. 위의 7번 자료에서 Create Document를 했기 때문에 Watch Documents에서 새로 생성한 문서가 탐지가 됩니다.
-    
-    1. Get Content of a Document를 통해 8에서 진행했던 작업의 내용을 가져옵니다.
-        
-        ![image.png](images/image%2013.png)
-        
-    2. Search Rows
-        
-        ![image.png](images/image%2014.png)
-        
-        요청한 고객에게 메일을 전송해야 되기 때문에
-        
-        구글 폼에 기록된 고객의 메일 주소를 가져옵니다.
-        
-    3. 고객에게 이메일을 전송합니다.
-        
-        ![image.png](images/image%2015.png)
-        
-        SMTP 설정 및 연결 후 수신자에게는 11번에서 작업한 고객의 이메일, 그리고 내용에는 평문으로 10번에서 가져온 문서의 내용을 입력합니다.
-        
-        ![image.png](images/image%2016.png)
-        
-        잘 도착합니다.
-        
-    
-- 서비스 동작의 흐름 -4
-    
-    ![image.png](images/image%2017.png)
-    
-    1. 사후 관리를 위해 답변한 내용을 복사하여 다른 시트에 백업합니다.
-    
-    1. 다른 고객에게 이전 고객의 요청 사항이 도착하면 안되므로 시트를 비웁니다.
-- 어떤 시행착오가 있었는지
-    
-    ![스크린샷 2025-09-10 101404.png](images/8bdc8312-3a92-439c-be17-648d75181a7c.png)
-    
-    - 분명 INPUT은 5개일텐데 필터에만 10개가 잡히는 점 (40개까지 잡아 봤습니다.)
-    
-    ![스크린샷 2025-09-10 114218.png](images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2025-09-10_114218.png)
-    
-    - 똑같은 가게만 여러 번 적히는 점 (Timestamp 다르게 들어간 다른 작업인데 내용이 같음)
-    
-    ![image.png](images/image%2018.png)
-    
-    - 앞에서 반복 작업이 들어가면 뒷 순서의 모든 작업이 그 횟수만큼 반복된다는 것을 알았습니다. 메일 30통 받아봤습니다.
-    
-- 배운 점, 개선할 점 혹은 느낀 점
-    - Make 정말 넓게 활용하면 상당히 편리하고 간편한 도구 같아서 프로젝트 후에도 다뤄볼 것 같습니다.
-    - 오류 발생 시 어디서 잘못됐는지 그리고 Run This Module 등을 실행하여 천천히 분석해 보아야겠다 라고 생각이 들었습니다.
-    - 한눈에 잘 보이지가 않았습니다.
-    - **한 시나리오에 모든 내용을 담을 필요는 없다고 느꼈습니다.**
-    - 저장을 활성화합시다.
-    - 크레딧을 아껴씁니다.
+> 처음 방문한 지역에서 필요한 시설이나 즐길 거리를 검색하고, 요청 결과를 문서 및 이메일로 자동 구성해 주는 Make 기반 사무자동화 워크플로우 프로젝트입니다.
+
+---
+
+## 📑 목차
+- [1. 프로젝트 개요](#1-프로젝트-개요)
+- [2. 사용 모듈 (Tech Stack)](#2-사용-모듈-tech-stack)
+- [3. 서비스 동작 흐름](#3-서비스-동작-흐름)
+  - [전체 흐름 요약](#전체-흐름-요약)
+  - [흐름 1: 응답 감지 및 장소 정보 수집/정리](#흐름-1-응답-감지-및-장소-정보-수집정리)
+  - [흐름 2: 종합 보고서 생성 (Google Docs)](#흐름-2-종합-보고서-생성-google-docs)
+  - [흐름 3: 고객 이메일 발송 (Naver SMTP)](#흐름-3-고객-이메일-발송-naver-smtp)
+  - [흐름 4: 데이터 사후 관리 및 초기화](#흐름-4-데이터-사후-관리-및-초기화)
+- [4. 주요 시행착오 및 해결 과정](#4-주요-시행착오-및-해결-과정)
+- [5. 배운 점 및 느낀 점](#5-배운-점-및-느낀-점)
+
+---
+
+## 1. 프로젝트 개요
+* **기획 배경**: 처음 가는 동네에 도착했을 때 어떤 편의시설이 있는지, 무엇을 하면 좋을지 궁금할 때 손쉽게 관련 정보를 요청하고 통합 안내 보고서를 발송받을 수 있도록 자동화 서비스를 기획했습니다.
+
+---
+
+## 2. 사용 모듈 (Tech Stack)
+* **Google Sheets** (폼 응답 수신, 데이터 기록/검색/초기화)
+* **HTTP** (Kakao API 연동)
+* **JSON** (Parse JSON 데이터 정형화)
+* **Flow Control** (Iterator 순차 처리)
+* **OpenAI** (후기 요약 및 정보 정제)
+* **Google Docs** (최종 보고서 자동 생성)
+* **Mail** (Naver SMTP 기반 이메일 전송)
+
+---
+
+## 3. 서비스 동작 흐름
+
+### 전체 흐름 요약
+![전체 시나리오 1](images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-09-10%20110921.png)
+![전체 시나리오 2](images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-09-10%20112233.png)
+![전체 시나리오 3](images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-09-10%20112658.png)
+![전체 시나리오 4](images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-09-10%20113747.png)
+
+---
+
+### 흐름 1: 응답 감지 및 장소 정보 수집/정리
+![흐름 1 모듈 구성](images/image.png)
+
+1. **Google Sheets**: Google Form과 연결된 구글 시트에서 새로운 요청 응답을 감지합니다.
+   ![Google Sheets 감지](images/image%201.png)
+
+2. **HTTP (Kakao API)**: 사용자가 요청한 지역 정보를 Kakao API를 통해 가져옵니다.
+   ![HTTP Kakao API](images/image%202.png)
+
+3. **Parse JSON**: API 응답으로 들어온 JSON 데이터를 파싱하여 가독성 있게 정리합니다.
+   ![Parse JSON Input](images/image%203.png)
+   ![Parse JSON Output](images/image%204.png)
+
+4. **Iterator (Flow Control)**: Kakao API 추출 데이터 중 4개 컬렉션을 하나씩 순차적으로 감지하여 넘겨줍니다.  
+   *(Iterator를 사용하지 않으면 1번 컬렉션만 4번 반복 처리되는 현상이 발생함)*
+   ![Iterator 설정](images/image%205.png)
+   ![Iterator Output](images/image%206.png)
+
+5. **OpenAI**: 파싱된 데이터 및 후기 내용을 OpenAI를 활용해 읽기 쉽게 핵심 요약합니다. Bundle별로 4개의 개별 답변이 출력됩니다.
+   ![OpenAI 요약](images/image%207.png)
+
+6. **Google Sheets (Add a row)**: 정제된 출력값을 구글 시트에 순차적으로 기록합니다.
+   ![Google Sheets Add Row](images/image%208.png)
+
+---
+
+### 흐름 2: 종합 보고서 생성 (Google Docs)
+![흐름 2 모듈 구성](images/image%209.png)
+
+1. **Create Document**: 결과물을 담을 신규 Google Docs 문서를 생성합니다.
+2. **Search Rows**: 앞서 `Add a row`로 기록한 시트 데이터들을 검색합니다.
+3. **Insert Text to Document**: 검색된 Row 데이터들을 새로 생성된 Docs 문서에 일괄 삽입합니다. 여러 개의 개별 답변을 단일 문서로 통합하는 과정입니다.
+   ![Google Docs 설정](images/image%2010.png)
+   ![Google Docs 생성 결과](images/image%2011.png)
+
+---
+
+### 흐름 3: 고객 이메일 발송 (Naver SMTP)
+![흐름 3 모듈 구성](images/image%2012.png)
+
+1. **Watch Documents**: 생성된 Google Docs 문서의 신규 생성을 탐지합니다.
+2. **Get Content of a Document**: 통합 완성된 문서 내부 텍스트 콘텐츠를 가져옵니다.
+   ![Get Document Content](images/image%2013.png)
+
+3. **Search Rows**: 고객에게 이메일을 발송하기 위해 구글 폼 응답 데이터에서 수신자 이메일 주소를 조회합니다.
+   ![Search Rows 이메일 조회](images/image%2014.png)
+
+4. **Send an Email (Naver SMTP)**: 수신자 주소로 Google Docs 문서의 내용을 본문에 담아 최종 이메일을 발송합니다.
+   ![Email 전송 설정](images/image%2015.png)
+   ![수신된 이메일 화면](images/image%2016.png)
+
+---
+
+### 흐름 4: 데이터 사후 관리 및 초기화
+![흐름 4 모듈 구성](images/image%2017.png)
+
+1. **백업 진행**: 사후 관리를 위해 작성된 답변 데이터를 별도의 백업 전용 시트로 복사합니다.
+2. **시트 초기화**: 다음 고객 요청 시 이전 요청자의 데이터가 섞이지 않도록 사용이 끝난 시트를 비웁니다.
+
+---
+
+## 4. 주요 시행착오 및 해결 과정
+
+1. **필터 건수 이상 문제**
+   - **현상**: INPUT 값은 5개인데 필터 상에서 10개~40개까지 불필요하게 늘어나 감지되는 문제 발생.
+   - ![시행착오 1](images/8bdc8312-3a92-439c-be17-648d75181a7c.png)
+
+2. **동일 데이터 중복 기재**
+   - **현상**: 다른 타임스탬프의 별도 작업임에도 똑같은 가게 정보가 중복으로 적히는 문제 발생.
+   - ![시행착오 2](images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-09-10%20114218.png)
+
+3. **반복 구조로 인한 폭포수 이메일 발송**
+   - **현상**: 선행 모듈에서 반복 구조(Iterator 등)가 들어가자 뒤따르는 후속 작업(메일 발송)까지 연쇄적으로 재실행되어 메일이 30통 이상 연속 발송됨.
+   - **해결**: 시나리오를 분리하고 시트 조회를 중간 매개체로 활용하여 루프 중복을 방지함.
+   - ![시행착오 3](images/image%2018.png)
+
+---
+
+## 5. 배운 점 및 느낀 점
+- **Make의 가능성**: 업무 자동화 도구로서 Make의 확장성과 편리함을 경험했으며, 프로젝트 이후에도 다양한 작업에 활용해 볼 예정입니다.
+- **디버깅 모드 활용**: 에러 발생 시 `Run This Module` 기능과 개별 번들 로그를 단계별로 검증하는 분석 방식의 중요성을 배웠습니다.
+- **시나리오 분리의 필요성**: **"한 시나리오 안에 모든 동작을 무리하게 담을 필요가 없다"**는 것을 크게 깨달았습니다. 목적에 맞게 시나리오를 분리하는 것이 관리와 오류 방지에 훨씬 유리합니다.
+- **기타 주요 교훈**:
+  - 시나리오 수정 후에는 항상 **저장(Save) 버튼**을 누르는 습관을 들일 것!
+  - 모듈 구조를 효율적으로 구성하여 **API 크레딧을 아껴 쓸 것!**
