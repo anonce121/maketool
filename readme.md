@@ -1,4 +1,4 @@
-# 🚀 Make를 이용한 지역 편의시설 및 정보 안내 사무자동화 (홍승준)
+# 🚀 Make를 이용한 지역 편의시설 및 정보 안내 사무자동화
 
 > 사용자 요청(Google Form) 수신부터 Kakao API 및 OpenAI 연동, Google Docs 보고서 통합 생성, Naver SMTP 이메일 자동 발송, 데이터 백업 및 초기화까지 **전 과정을 자동화한 Make 기반 워크플로우 프로젝트**입니다.
 
@@ -141,3 +141,10 @@
   - 고객 문의 자동 분류 및 안내문 발송
   - 거래처 및 시장 조사 데이터 수집 및 정기 보고서 통합 생성
   - 비품 신청 및 내부 요청건 처리 자동화
+
+---
+
+## 📧 Contact
+
+- **이메일**: `anonce121@gmail.com`
+- **GitHub**: [github.com/anonce121](https://github.com/anonce121)
